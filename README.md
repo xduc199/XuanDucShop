@@ -1,161 +1,223 @@
-# XuanDucShop
+# 🛍️ XuanDucShop
 
-**A simple store management web application built with ASP.NET Core MVC.**
+<p align="center">
+  <strong>HỆ THỐNG QUẢN LÝ CỬA HÀNG</strong><br/>
+  Ứng dụng web xây dựng với ASP.NET Core MVC và .NET 10
+</p>
 
-XuanDucShop là ứng dụng quản lý cửa hàng với các chức năng quản lý danh mục, sản phẩm, nhân viên và hóa đơn. Dự án được xây dựng nhằm thực hành mô hình MVC, xử lý dữ liệu, validation và CRUD trong ASP.NET Core.
-
-[**Repository**](https://github.com/xduc199/XuanDucShop) · ASP.NET Core MVC · .NET 10 · Bootstrap 5
+<p align="center">
+  <img src="https://img.shields.io/badge/.NET-10.0-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt=".NET 10"/>
+  <img src="https://img.shields.io/badge/ASP.NET%20Core-MVC-512BD4?style=flat-square&logo=dotnet&logoColor=white" alt="ASP.NET Core MVC"/>
+  <img src="https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=flat-square&logo=bootstrap&logoColor=white" alt="Bootstrap"/>
+  <img src="https://img.shields.io/badge/C%23-Ngôn%20ngữ%20lập%20trình-239120?style=flat-square&logo=csharp&logoColor=white" alt="C#"/>
+</p>
 
 ---
 
-## Overview
+## 📌 1. Giới thiệu
 
-Ứng dụng cung cấp một giao diện quản trị tập trung, cho phép theo dõi dữ liệu cửa hàng và thực hiện các thao tác quản lý cơ bản.
+**XuanDucShop** là ứng dụng web hỗ trợ quản lý các hoạt động cơ bản của cửa hàng. Dự án được phát triển bằng ASP.NET Core MVC, sử dụng giao diện Bootstrap và tổ chức mã nguồn theo mô hình Model–View–Controller.
 
-| Dashboard | Store Management |
+Mục tiêu của dự án là xây dựng một hệ thống có giao diện trực quan, dễ sử dụng và hỗ trợ quản lý dữ liệu thông qua các thao tác CRUD.
+
+## ✨ 2. Chức năng chính
+
+| Chức năng | Mô tả |
 |---|---|
-| Tổng quan số liệu và hóa đơn gần đây | Quản lý dữ liệu qua các trang danh sách và biểu mẫu |
+| 📊 Tổng quan | Hiển thị thông tin tổng hợp của cửa hàng. |
+| 🗂️ Danh mục | Thêm, xem, chỉnh sửa và xóa danh mục sản phẩm. |
+| 📦 Sản phẩm | Quản lý thông tin sản phẩm và danh mục liên quan. |
+| 👥 Nhân viên | Quản lý thông tin nhân viên. |
+| 🧾 Hóa đơn | Quản lý hóa đơn và các chi tiết hóa đơn. |
+| 🛡️ Kiểm tra dữ liệu | Kiểm tra dữ liệu đầu vào và các mối quan hệ giữa đối tượng. |
+| 📱 Giao diện thích ứng | Hỗ trợ hiển thị trên nhiều kích thước màn hình. |
 
-### Features
+## 🧰 3. Công nghệ sử dụng
 
-- **Dashboard** — tổng hợp số liệu và hiển thị hóa đơn gần đây.
-- **Categories** — quản lý danh mục sản phẩm.
-- **Products** — quản lý thông tin, giá bán, tồn kho và trạng thái sản phẩm.
-- **Employees** — quản lý thông tin nhân viên.
-- **Invoices** — quản lý hóa đơn và thông tin khách hàng.
-- **Invoice details** — quản lý sản phẩm, số lượng, đơn giá và thành tiền.
-- **Validation** — kiểm tra dữ liệu đầu vào và các quan hệ nghiệp vụ.
-- **Responsive UI** — giao diện sử dụng Bootstrap, hỗ trợ nhiều kích thước màn hình.
+- ⚙️ **ASP.NET Core MVC:** Xây dựng cấu trúc ứng dụng web.
+- 💻 **C#:** Ngôn ngữ lập trình chính.
+- 🔷 **.NET 10:** Nền tảng chạy ứng dụng.
+- 🎨 **Bootstrap 5:** Xây dựng giao diện.
+- 🧠 **StoreData:** Quản lý dữ liệu trong bộ nhớ.
 
-## Tech Stack
+## 🚀 4. Hướng dẫn cài đặt và chạy dự án
 
-| Layer | Technology |
-|---|---|
-| Backend | C#, ASP.NET Core MVC, .NET 10 |
-| Frontend | Razor Views, HTML5, CSS3, JavaScript |
-| UI | Bootstrap 5 |
-| Validation | Data Annotations, server-side validation |
-| Data storage | In-memory |
+### Bước 1. Chuẩn bị môi trường
 
-## Architecture
+Cài đặt các công cụ sau trước khi chạy dự án:
 
-XuanDucShop sử dụng mô hình MVC, kết hợp `StoreData` để quản lý dữ liệu trong bộ nhớ và ViewModel để chuẩn bị dữ liệu cho giao diện.
+- **.NET 10 SDK:** [Tải tại đây](https://dotnet.microsoft.com/download/dotnet/10.0).
+- **Git:** [Tải tại đây](https://git-scm.com/downloads).
+- **Visual Studio 2022** phiên bản hỗ trợ .NET 10, hoặc Visual Studio Code nếu muốn chỉnh sửa mã nguồn bằng trình soạn thảo nhẹ hơn.
 
-```mermaid
-flowchart TD
-    A["Browser"] --> B["ASP.NET Core Routing"]
-    B --> C["HomeController"]
-    C <--> D["StoreData"]
-    C --> E["ViewModels"]
-    E --> F["Razor Views"]
-    F --> G["HTML Response"]
-    G --> A
+Nếu sử dụng Visual Studio, hãy kiểm tra trong Visual Studio Installer rằng đã cài đặt thành phần **ASP.NET and web development** và phiên bản SDK phù hợp.
 
-    classDef primary fill:#eef2ff,stroke:#64748b,color:#1e293b
-    classDef data fill:#f8fafc,stroke:#94a3b8,color:#1e293b
-    class A,B,C,E,F,G primary
-    class D data
+### Bước 2. Kiểm tra công cụ
+
+Mở **Terminal**, **PowerShell** hoặc **Command Prompt**, sau đó chạy:
+
+```bash
+dotnet --info
+git --version
 ```
 
-### Core models
+- Lệnh `dotnet --info` hiển thị thông tin SDK và môi trường .NET.
+- Lệnh `git --version` xác nhận Git đã được cài đặt.
 
-```text
-Category
-   └── Product
+Nếu hệ thống không nhận diện lệnh `dotnet` hoặc `git`, hãy kiểm tra lại quá trình cài đặt và biến môi trường `PATH`, sau đó mở terminal mới.
 
-Employee
-   └── Invoice
-         └── InvoiceDetail
-                └── Product
-```
+### Bước 3. Tải mã nguồn từ GitHub
 
-Các quan hệ trên được quản lý và kiểm tra trong logic ứng dụng; dự án hiện chưa sử dụng cơ sở dữ liệu quan hệ.
-
-## Project Structure
-
-```text
-XuanDucShop/
-├── Controllers/
-│   └── HomeController.cs
-├── Models/
-│   ├── Category.cs
-│   ├── Product.cs
-│   ├── Employee.cs
-│   ├── Invoice.cs
-│   ├── InvoiceDetail.cs
-│   └── ViewModels/
-├── Services/
-│   └── StoreData.cs
-├── Views/
-│   ├── Home/
-│   └── Shared/
-├── wwwroot/
-│   ├── css/
-│   └── lib/
-├── Program.cs
-├── appsettings.json
-└── XuanDucShop.csproj
-```
-
-| Directory | Responsibility |
-|---|---|
-| `Controllers` | Tiếp nhận request và điều phối xử lý |
-| `Models` | Định nghĩa dữ liệu nghiệp vụ |
-| `Models/ViewModels` | Chuẩn bị dữ liệu cho các trang và biểu mẫu |
-| `Services` | Quản lý dữ liệu in-memory |
-| `Views` | Giao diện Razor |
-| `wwwroot` | CSS, JavaScript và tài nguyên tĩnh |
-
-## Getting Started
-
-### Requirements
-
-- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-- Git
-
-### Installation
+Chọn thư mục muốn lưu dự án, mở terminal tại thư mục đó và chạy:
 
 ```bash
 git clone https://github.com/xduc199/XuanDucShop.git
+```
+
+Sau khi tải hoàn tất, truy cập thư mục dự án:
+
+```bash
 cd XuanDucShop
+```
+
+Kiểm tra các tệp và thư mục:
+
+```bash
+dir
+```
+
+Trên Linux hoặc macOS, có thể sử dụng `ls` thay cho `dir`.
+
+### Bước 4. Kiểm tra tệp dự án
+
+Xác định thư mục chứa tệp `.csproj`. Tệp này chứa cấu hình dự án .NET và các thông tin cần thiết để biên dịch.
+
+Nếu tệp `.csproj` nằm ngay trong thư mục `XuanDucShop`, tiếp tục các bước tiếp theo tại thư mục hiện tại.
+
+Nếu tệp nằm trong thư mục con, hãy chuyển đến đúng thư mục trước khi chạy các lệnh `dotnet`.
+
+### Bước 5. Khôi phục các gói phụ thuộc
+
+Chạy lệnh:
+
+```bash
 dotnet restore
+```
+
+Lệnh này khôi phục các gói NuGet mà dự án cần sử dụng.
+
+Chờ đến khi quá trình hoàn tất. Nếu xuất hiện lỗi kết nối hoặc không tải được gói, hãy kiểm tra kết nối Internet, cấu hình NuGet và phiên bản SDK.
+
+### Bước 6. Biên dịch dự án
+
+Chạy:
+
+```bash
 dotnet build
+```
+
+Nếu biên dịch thành công, terminal sẽ hiển thị thông báo tương tự:
+
+```text
+Build succeeded.
+```
+
+Nếu xuất hiện lỗi, hãy đọc thông báo lỗi đầu tiên để xác định tệp và dòng mã cần sửa trước khi tiếp tục.
+
+### Bước 7. Khởi chạy ứng dụng
+
+Chạy lệnh:
+
+```bash
 dotnet run
 ```
 
-Sau khi ứng dụng khởi động, mở địa chỉ HTTP hoặc HTTPS được hiển thị trong terminal.
+Terminal sẽ hiển thị địa chỉ mà máy chủ web đang sử dụng, chẳng hạn `http://localhost:xxxx` hoặc `https://localhost:xxxx`.
 
-## Data & Validation
+**Lưu ý:** Hãy sử dụng đúng địa chỉ và cổng được hiển thị trong terminal, không mặc định rằng ứng dụng luôn chạy ở một cổng cố định.
 
-Ứng dụng hiện sử dụng dữ liệu mẫu được quản lý bởi `StoreData`.
+### Bước 8. Truy cập giao diện
 
-- Dữ liệu được dùng chung trong phiên chạy của ứng dụng.
-- Validation được thực hiện phía server; các biểu mẫu hỗ trợ validation phía client.
-- Các thao tác CRUD kiểm tra dữ liệu và những quan hệ nghiệp vụ liên quan.
-- Tổng tiền hóa đơn được tính lại phía server dựa trên các chi tiết hóa đơn.
+1. Giữ terminal đang chạy ứng dụng.
+2. Mở trình duyệt như Chrome, Edge hoặc Firefox.
+3. Nhập địa chỉ được hiển thị ở Bước 7.
+4. Kiểm tra trang tổng quan và các mục quản lý danh mục, sản phẩm, nhân viên, hóa đơn.
 
-> **Current limitation:** Dữ liệu được lưu trong bộ nhớ và sẽ mất khi ứng dụng khởi động lại. Chưa tích hợp Entity Framework Core, database, xác thực người dùng hoặc bộ test tự động.
+Nếu muốn dừng ứng dụng, quay lại terminal và nhấn `Ctrl + C`.
 
-## Roadmap
+### Bước 9. Chạy dự án bằng Visual Studio
+
+Nếu muốn chạy trực tiếp trong Visual Studio:
+
+1. Mở Visual Studio.
+2. Chọn **Open a project or solution**.
+3. Mở tệp `.sln` nếu dự án có cung cấp; nếu không, mở tệp `.csproj`.
+4. Chờ Visual Studio tải dự án và khôi phục các gói phụ thuộc.
+5. Chọn cấu hình chạy phù hợp.
+6. Nhấn `F5` để chạy kèm gỡ lỗi hoặc `Ctrl + F5` để chạy không gỡ lỗi.
+7. Trình duyệt sẽ mở ứng dụng nếu cấu hình khởi chạy được thiết lập phù hợp.
+
+## 📁 5. Cấu trúc dự án
+
+```text
+XuanDucShop/
+├── Controllers/       # Tiếp nhận và xử lý yêu cầu
+├── Models/            # Các mô hình dữ liệu
+│   └── ViewModels/    # Dữ liệu phục vụ giao diện
+├── Services/          # Xử lý nghiệp vụ và quản lý dữ liệu
+├── Views/             # Giao diện Razor
+├── wwwroot/           # CSS, JavaScript và tài nguyên tĩnh
+├── Program.cs         # Cấu hình và khởi chạy ứng dụng
+└── README.md          # Tài liệu hướng dẫn dự án
+```
+
+## 🧪 6. Kiểm tra hoạt động
+
+Sau khi chạy ứng dụng, có thể kiểm tra lần lượt:
+
+- [ ] Trang tổng quan tải thành công.
+- [ ] Các trang danh mục và sản phẩm hiển thị đúng.
+- [ ] Có thể thử thêm, xem, chỉnh sửa và xóa dữ liệu.
+- [ ] Các biểu mẫu từ chối dữ liệu không hợp lệ theo quy tắc đã triển khai.
+- [ ] Các trang nhân viên và hóa đơn hoạt động bình thường.
+- [ ] Giao diện hiển thị phù hợp khi thay đổi kích thước trình duyệt.
+
+Đây là danh sách kiểm tra thủ công; không đồng nghĩa dự án đã có bộ kiểm thử tự động.
+
+## 🛠️ 7. Xử lý lỗi thường gặp
+
+| Lỗi | Cách xử lý |
+|---|---|
+| Không nhận diện lệnh `dotnet` | Cài .NET 10 SDK, kiểm tra `PATH` và mở lại terminal. |
+| Không nhận diện lệnh `git` | Cài Git và kiểm tra biến môi trường. |
+| Không tìm thấy tệp `.csproj` | Kiểm tra lại thư mục hiện tại và chuyển đến thư mục chứa dự án. |
+| `dotnet restore` thất bại | Kiểm tra Internet, nguồn NuGet và phiên bản SDK. |
+| `dotnet build` thất bại | Đọc thông báo lỗi, xác định tệp và dòng mã liên quan. |
+| Cổng đang được sử dụng | Kiểm tra tiến trình đang chạy hoặc điều chỉnh cấu hình cổng phù hợp. |
+| Trang web không truy cập được | Kiểm tra terminal, địa chỉ khởi chạy và thông báo lỗi của ứng dụng. |
+
+## ⚠️ 8. Lưu ý về dữ liệu
+
+Phiên bản hiện tại sử dụng **StoreData để lưu dữ liệu trong bộ nhớ**. Vì vậy:
+
+- Dữ liệu có thể bị mất khi ứng dụng khởi động lại.
+- Dữ liệu không được lưu bền vững vào cơ sở dữ liệu.
+- Không nên sử dụng dữ liệu thử nghiệm này như dữ liệu vận hành thực tế.
+
+Các tính năng như cơ sở dữ liệu SQL Server, xác thực người dùng và kiểm thử tự động có thể được bổ sung trong những phiên bản tiếp theo.
+
+## 🗺️ 9. Định hướng phát triển
 
 - [ ] Tích hợp Entity Framework Core và SQL Server.
-- [ ] Bổ sung xác thực và phân quyền.
-- [ ] Thêm tìm kiếm và phân trang.
-- [ ] Xây dựng bộ kiểm thử tự động.
-- [ ] Hoàn thiện quy trình upload ảnh sản phẩm.
-
-## Development
-
-Khi đóng góp thay đổi, hãy tạo branch riêng, kiểm tra diff và chạy build trước khi tạo Pull Request.
-
-```bash
-git checkout -b feature/your-feature
-dotnet build
-```
+- [ ] Xây dựng chức năng đăng nhập và phân quyền.
+- [ ] Bổ sung tìm kiếm, lọc và phân trang.
+- [ ] Bổ sung kiểm thử tự động.
+- [ ] Hoàn thiện báo cáo và thống kê cửa hàng.
 
 ---
 
 <p align="center">
-  <strong>XuanDucShop</strong><br>
-  <sub>Store management · ASP.NET Core MVC · .NET 10</sub>
+  <strong>🛍️ XuanDucShop</strong><br/>
+  <sub>Đơn giản · Trực quan · Dễ sử dụng</sub><br/><br/>
+  <a href="https://github.com/xduc199/XuanDucShop">📂 Xem mã nguồn trên GitHub</a>
 </p>
