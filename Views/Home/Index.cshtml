@@ -1,12 +1,66 @@
-@{ ViewData["Title"] = "Trang chủ"; }
-<div class="text-center">
-    <h1 class="display-5">Quản lý cửa hàng</h1>
-    <p class="lead">Trang chủ quản lý danh mục, sản phẩm, nhân viên và hóa đơn.</p>
+@model XuanDucShop.ViewModels.HomeViewModel
+
+@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Tổng quan cửa hàng</h1>
+        <p class="text-secondary mb-0">Theo dõi nhanh tình hình hoạt động của XuanDucShop.</p>
+    </div>
+    <a asp-action="CreateInvoice" class="btn btn-primary">+ Tạo hóa đơn</a>
 </div>
-<ul>
-    <li><a asp-action="Category">Danh mục sản phẩm</a></li>
-    <li><a asp-action="Product">Danh sách sản phẩm</a></li>
-    <li><a asp-action="Employee">Danh sách nhân viên</a></li>
-    <li><a asp-action="Invoice">Hóa đơn</a></li>
-    <li><a asp-action="InvoiceDetail">Chi tiết hóa đơn</a></li>
-</ul>
+
+<div class="row g-3 mb-4">
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-secondary mb-2">Danh mục</p>
+                <div class="fs-2 fw-semibold">@Model.CategoryCount</div>
+                <a asp-action="Category" class="small text-decoration-none">Xem danh mục →</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-secondary mb-2">Sản phẩm</p>
+                <div class="fs-2 fw-semibold">@Model.ProductCount</div>
+                <a asp-action="Product" class="small text-decoration-none">Quản lý sản phẩm →</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-secondary mb-2">Nhân viên</p>
+                <div class="fs-2 fw-semibold">@Model.EmployeeCount</div>
+                <a asp-action="Employee" class="small text-decoration-none">Xem nhân viên →</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-secondary mb-2">Hóa đơn</p>
+                <div class="fs-2 fw-semibold">@Model.InvoiceCount</div>
+                <div class="small text-secondary">Tổng doanh thu mẫu</div>
+                <div class="fw-semibold text-success">@Model.Revenue.ToString("N0") đ</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h2 class="h5 mb-3">Truy cập nhanh</h2>
+        <div class="d-flex flex-wrap gap-2">
+            <a asp-action="Category" class="btn btn-outline-secondary">Danh mục sản phẩm</a>
+            <a asp-action="Product" class="btn btn-outline-secondary">Sản phẩm</a>
+            <a asp-action="Employee" class="btn btn-outline-secondary">Nhân viên</a>
+            <a asp-action="Invoice" class="btn btn-outline-secondary">Hóa đơn</a>
+            <a asp-action="InvoiceDetail" class="btn btn-outline-secondary">Chi tiết hóa đơn</a>
+        </div>
+    </div>
+</div>
