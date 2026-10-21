@@ -2,18 +2,18 @@
 @{ ViewData["Title"] = "Nhân viên"; }
 
 <div class="page-heading">
-    <div><p class="eyebrow">NHÂN SỰ</p><h1>Nhân viên</h1><p>Thông tin nhân viên và trạng thái làm việc.</p></div>
+    <div><h1>Nhân viên</h1><p>Thông tin nhân viên và trạng thái làm việc.</p></div>
     <a asp-action="CreateEmployee" class="btn btn-primary">Thêm nhân viên</a>
 </div>
-<section class="content-card">
+<section>
     @if (!Model.Any())
     {
-        <div class="empty-state"><strong>Chưa có nhân viên</strong><span>Thêm nhân viên để quản lý nhân sự cửa hàng.</span><a asp-action="CreateEmployee" class="btn btn-primary mt-3">Thêm nhân viên</a></div>
+        <p class="empty-state">Chưa có nhân viên. Thêm nhân viên để quản lý nhân sự cửa hàng.</p>
     }
     else
     {
         <div class="table-responsive">
-            <table class="table data-table align-middle mb-0">
+            <table class="table table-hover data-table align-middle mb-0">
                 <thead><tr><th>Mã</th><th>Họ và tên</th><th>Số điện thoại</th><th>Email</th><th>Tài khoản liên kết</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
                 <tbody>
                 @foreach (var employee in Model)

@@ -3,25 +3,25 @@
 @{ ViewData["Title"] = "Sản phẩm"; }
 
 <div class="page-heading">
-    <div><p class="eyebrow">HÀNG HÓA VÀ TỒN KHO</p><h1>Sản phẩm</h1><p>Theo dõi mặt hàng, giá bán và số lượng tồn.</p></div>
+    <div><h1>Sản phẩm</h1><p>Theo dõi mặt hàng, giá bán và số lượng tồn.</p></div>
     <a asp-action="CreateProduct" class="btn btn-primary">Thêm sản phẩm</a>
 </div>
-<section class="content-card">
+<section>
     @if (!Model.Any())
     {
-        <div class="empty-state"><strong>Chưa có sản phẩm</strong><span>Thêm sản phẩm đầu tiên để bắt đầu quản lý hàng hóa.</span><a asp-action="CreateProduct" class="btn btn-primary mt-3">Thêm sản phẩm</a></div>
+        <p class="empty-state">Chưa có sản phẩm. Thêm sản phẩm đầu tiên để bắt đầu quản lý hàng hóa.</p>
     }
     else
     {
         <div class="table-responsive">
-            <table class="table data-table align-middle mb-0">
+            <table class="table table-hover data-table align-middle mb-0">
                 <thead><tr><th>Mã</th><th>Sản phẩm</th><th>Danh mục</th><th class="text-end">Đơn giá</th><th class="text-center">Tồn kho</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
                 <tbody>
                 @foreach (var product in Model)
                 {
                     <tr>
                         <td class="table-id">#@product.Id</td>
-                        <td><div class="product-cell"><div class="product-placeholder" aria-hidden="true">@(string.IsNullOrEmpty(product.Name) ? "S" : product.Name[..1])</div><div><span class="cell-primary">@product.Name</span><small class="cell-secondary">@(string.IsNullOrWhiteSpace(product.ImageFileName) ? "Chưa có hình ảnh" : product.ImageFileName)</small></div></div></td>
+                        <td><span class="cell-primary">@product.Name</span><small class="cell-secondary d-block">@(string.IsNullOrWhiteSpace(product.ImageFileName) ? "Chưa có hình ảnh" : product.ImageFileName)</small></td>
                         <td>@product.CategoryName</td>
                         <td class="text-end fw-semibold">@product.Price.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) ₫</td>
                         <td class="text-center"><span class="stock-value @(product.StockQuantity == 0 ? "stock-empty" : "")">@product.StockQuantity</span></td>

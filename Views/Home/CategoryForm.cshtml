@@ -6,9 +6,9 @@
 }
 
 <div class="page-heading">
-    <div><p class="eyebrow">DANH MỤC</p><h1>@ViewData["FormTitle"]</h1><p>Nhập thông tin danh mục sản phẩm.</p></div>
+    <div><h1>@ViewData["FormTitle"]</h1><p>Thông tin danh mục sản phẩm.</p></div>
 </div>
-<section class="content-card form-card">
+<section class="form-page form-content">
     <form asp-action="@formAction" asp-route-id="@routeId" method="post">
         @Html.AntiForgeryToken()
         <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
@@ -22,7 +22,7 @@
             <textarea asp-for="Description" class="form-control" rows="4" placeholder="Mô tả ngắn về danh mục"></textarea>
             <span asp-validation-for="Description" class="field-error"></span>
         </div>
-        <div class="form-actions"><a asp-action="Category" class="btn btn-light">Hủy</a><button type="submit" class="btn btn-primary">Lưu danh mục</button></div>
+        <div class="form-actions"><button type="submit" class="btn btn-primary">Lưu danh mục</button><a asp-action="Category" class="btn btn-light">Hủy</a></div>
     </form>
 </section>
 

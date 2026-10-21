@@ -6,9 +6,9 @@
 }
 
 <div class="page-heading">
-    <div><p class="eyebrow">HÀNG HÓA VÀ TỒN KHO</p><h1>@ViewData["FormTitle"]</h1><p>Giá bán và số lượng phải là giá trị không âm.</p></div>
+    <div><h1>@ViewData["FormTitle"]</h1><p>Giá bán và số lượng tồn kho.</p></div>
 </div>
-<section class="content-card form-card">
+<section class="form-page form-page-wide form-content">
     <form asp-action="@formAction" asp-route-id="@routeId" method="post">
         @Html.AntiForgeryToken()
         <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
@@ -48,7 +48,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-actions"><a asp-action="Product" class="btn btn-light">Hủy</a><button type="submit" class="btn btn-primary">Lưu sản phẩm</button></div>
+        <div class="form-actions"><button type="submit" class="btn btn-primary">Lưu sản phẩm</button><a asp-action="Product" class="btn btn-light">Hủy</a></div>
     </form>
 </section>
 
