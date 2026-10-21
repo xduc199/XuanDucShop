@@ -23,16 +23,16 @@ public class StoreData
 
     private readonly List<Employee> _employees =
     [
-        new() { Id = 1, FullName = "Nguyễn Minh An", Phone = "0901234567", Email = "an@example.com", IsActive = true },
-        new() { Id = 2, FullName = "Trần Thu Hà", Phone = "0912345678", Email = "ha@example.com", IsActive = true },
-        new() { Id = 3, FullName = "Lê Quốc Bảo", Phone = "0987654321", Email = "bao@example.com", IsActive = false }
+        new() { Id = 1, FullName = "Lê Xuân Đức", Phone = "0901234567", Email = "duc@example.com", IsActive = true },
+        new() { Id = 2, FullName = "Nguyễn Văn A", Phone = "0912345678", Email = "ha@example.com", IsActive = true },
+        new() { Id = 3, FullName = "Trần Thị B", Phone = "0987654321", Email = "nam@example.com", IsActive = false }
     ];
 
     private readonly List<Invoice> _invoices =
     [
         new() { Id = 1001, CreatedAt = new DateTime(2026, 10, 20, 9, 15, 0), EmployeeId = 1, CustomerName = "Phạm Ngọc Lan", CustomerPhone = "0934567890", TotalAmount = 202000 },
         new() { Id = 1002, CreatedAt = new DateTime(2026, 10, 20, 10, 40, 0), EmployeeId = 2, CustomerName = "Hoàng Minh Đức", CustomerPhone = "0978123456", TotalAmount = 96000 },
-        new() { Id = 1003, CreatedAt = new DateTime(2026, 10, 21, 8, 30, 0), EmployeeId = 1, CustomerName = "Vũ Thanh Mai", CustomerPhone = "0908765432", TotalAmount = 45000 }
+        new() { Id = 1003, CreatedAt = new DateTime(2026, 10, 21, 8, 30, 0), EmployeeId = 3, CustomerName = "Vũ Thanh Mai", CustomerPhone = "0908765432", TotalAmount = 45000 }
     ];
 
     private readonly List<InvoiceDetail> _invoiceDetails =
