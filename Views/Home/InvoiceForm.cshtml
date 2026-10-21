@@ -6,9 +6,9 @@
 }
 
 <div class="page-heading">
-    <div><p class="eyebrow">BÁN HÀNG</p><h1>@ViewData["FormTitle"]</h1><p>Tổng tiền được tính tự động từ các dòng chi tiết hóa đơn.</p></div>
+    <div><h1>@ViewData["FormTitle"]</h1><p>Tổng tiền được tính từ các dòng chi tiết hóa đơn.</p></div>
 </div>
-<section class="content-card form-card">
+<section class="form-page form-content">
     <form asp-action="@formAction" asp-route-id="@routeId" method="post">
         @Html.AntiForgeryToken()
         <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
@@ -31,7 +31,7 @@
                 <span asp-validation-for="CustomerPhone" class="field-error"></span>
             </div>
         </div>
-        <div class="form-actions"><a asp-action="Invoice" class="btn btn-light">Hủy</a><button type="submit" class="btn btn-primary">Lưu hóa đơn</button></div>
+        <div class="form-actions"><button type="submit" class="btn btn-primary">Lưu hóa đơn</button><a asp-action="Invoice" class="btn btn-light">Hủy</a></div>
     </form>
 </section>
 

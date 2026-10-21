@@ -3,18 +3,18 @@
 @{ ViewData["Title"] = "Hóa đơn"; }
 
 <div class="page-heading">
-    <div><p class="eyebrow">BÁN HÀNG</p><h1>Hóa đơn</h1><p>Lịch sử giao dịch và thông tin khách hàng.</p></div>
+    <div><h1>Hóa đơn</h1><p>Lịch sử giao dịch và thông tin khách hàng.</p></div>
     <a asp-action="CreateInvoice" class="btn btn-primary">Tạo hóa đơn</a>
 </div>
-<section class="content-card">
+<section>
     @if (!Model.Any())
     {
-        <div class="empty-state"><strong>Chưa có hóa đơn</strong><span>Tạo hóa đơn để bắt đầu ghi nhận giao dịch.</span><a asp-action="CreateInvoice" class="btn btn-primary mt-3">Tạo hóa đơn</a></div>
+        <p class="empty-state">Chưa có hóa đơn. Tạo hóa đơn để bắt đầu ghi nhận giao dịch.</p>
     }
     else
     {
         <div class="table-responsive">
-            <table class="table data-table align-middle mb-0">
+            <table class="table table-hover data-table align-middle mb-0">
                 <thead><tr><th>Mã hóa đơn</th><th>Ngày tạo</th><th>Nhân viên lập</th><th>Khách hàng</th><th>Số điện thoại</th><th class="text-end">Tổng tiền</th><th>Chi tiết</th><th class="text-end">Thao tác</th></tr></thead>
                 <tbody>
                 @foreach (var invoice in Model)

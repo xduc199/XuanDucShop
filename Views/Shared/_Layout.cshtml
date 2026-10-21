@@ -1,51 +1,42 @@
-@{
-    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
-    var onCategoryPage = currentAction is "Category" or "CreateCategory" or "EditCategory";
-    var onProductPage = currentAction is "Product" or "CreateProduct" or "EditProduct";
-    var onEmployeePage = currentAction is "Employee" or "CreateEmployee" or "EditEmployee";
-    var onInvoicePage = currentAction is "Invoice" or "CreateInvoice" or "EditInvoice";
-    var onInvoiceDetailPage = currentAction is "InvoiceDetail" or "CreateInvoiceDetail" or "EditInvoiceDetail";
-}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f5f7fb" />
-    <title>@ViewData["Title"] · XuanDucShop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - XuanDucShop</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/XuanDucShop.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
+@{
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? string.Empty;
+    bool IsCurrent(params string[] actions) => actions.Contains(currentAction, StringComparer.OrdinalIgnoreCase);
+}
 <body>
-    <header class="site-header">
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-xl">
-                <a class="navbar-brand brand-lockup" asp-controller="Home" asp-action="Index">
-                    <span class="brand-mark">X</span>
-                    <span>XuanDucShop<small>QUẢN LÝ CỬA HÀNG</small></span>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation" aria-controls="mainNavigation" aria-expanded="false" aria-label="Mở menu điều hướng">
+    <header class="shop-header">
+        <nav class="navbar navbar-expand-lg" aria-label="Điều hướng chính">
+            <div class="container">
+                <a class="navbar-brand shop-brand" asp-controller="Home" asp-action="Index">XuanDucShop</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Mở menu">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="mainNavigation">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link @(currentAction == "Index" ? "active" : "")" asp-controller="Home" asp-action="Index" aria-current="@(currentAction == "Index" ? "page" : null)">Trang chủ</a></li>
-                        <li class="nav-item"><a class="nav-link @(onCategoryPage ? "active" : "")" asp-controller="Home" asp-action="Category" aria-current="@(onCategoryPage ? "page" : null)">Danh mục</a></li>
-                        <li class="nav-item"><a class="nav-link @(onProductPage ? "active" : "")" asp-controller="Home" asp-action="Product" aria-current="@(onProductPage ? "page" : null)">Sản phẩm</a></li>
-                        <li class="nav-item"><a class="nav-link @(onEmployeePage ? "active" : "")" asp-controller="Home" asp-action="Employee" aria-current="@(onEmployeePage ? "page" : null)">Nhân viên</a></li>
-                        <li class="nav-item"><a class="nav-link @(onInvoicePage ? "active" : "")" asp-controller="Home" asp-action="Invoice" aria-current="@(onInvoicePage ? "page" : null)">Hóa đơn</a></li>
-                        <li class="nav-item"><a class="nav-link @(onInvoiceDetailPage ? "active" : "")" asp-controller="Home" asp-action="InvoiceDetail" aria-current="@(onInvoiceDetailPage ? "page" : null)">Chi tiết hóa đơn</a></li>
+                <div class="collapse navbar-collapse" id="mainNavbar">
+                    <ul class="navbar-nav ms-lg-auto shop-nav">
+                        <li class="nav-item"><a class="nav-link @(IsCurrent("Index") ? "active" : "")" aria-current="@(IsCurrent("Index") ? "page" : null)" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                        <li class="nav-item"><a class="nav-link @(IsCurrent("Category", "CreateCategory", "EditCategory") ? "active" : "")" aria-current="@(IsCurrent("Category", "CreateCategory", "EditCategory") ? "page" : null)" asp-controller="Home" asp-action="Category">Danh mục</a></li>
+                        <li class="nav-item"><a class="nav-link @(IsCurrent("Product", "CreateProduct", "EditProduct") ? "active" : "")" aria-current="@(IsCurrent("Product", "CreateProduct", "EditProduct") ? "page" : null)" asp-controller="Home" asp-action="Product">Sản phẩm</a></li>
+                        <li class="nav-item"><a class="nav-link @(IsCurrent("Employee", "CreateEmployee", "EditEmployee") ? "active" : "")" aria-current="@(IsCurrent("Employee", "CreateEmployee", "EditEmployee") ? "page" : null)" asp-controller="Home" asp-action="Employee">Nhân viên</a></li>
+                        <li class="nav-item"><a class="nav-link @(IsCurrent("Invoice", "CreateInvoice", "EditInvoice") ? "active" : "")" aria-current="@(IsCurrent("Invoice", "CreateInvoice", "EditInvoice") ? "page" : null)" asp-controller="Home" asp-action="Invoice">Hóa đơn</a></li>
+                        <li class="nav-item"><a class="nav-link @(IsCurrent("InvoiceDetail", "CreateInvoiceDetail", "EditInvoiceDetail") ? "active" : "")" aria-current="@(IsCurrent("InvoiceDetail", "CreateInvoiceDetail", "EditInvoiceDetail") ? "page" : null)" asp-controller="Home" asp-action="InvoiceDetail">Chi tiết hóa đơn</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
 
-    <main class="container-xl page-content">
+    <main class="container shop-main">
         @if (TempData["SuccessMessage"] is string successMessage)
         {
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show" role="status">
                 @successMessage
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
             </div>
@@ -60,11 +51,8 @@
         @RenderBody()
     </main>
 
-    <footer class="site-footer">
-        <div class="container-xl d-flex flex-column flex-sm-row justify-content-between gap-1">
-            <span>XuanDucShop <span class="text-muted">· Quản lý cửa hàng</span></span>
-            <span class="text-muted">© @DateTime.Now.Year XuanDucShop</span>
-        </div>
+    <footer class="shop-footer py-3">
+        <div class="container small">© @DateTime.Now.Year XuanDucShop</div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
