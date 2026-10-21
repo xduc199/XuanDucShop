@@ -1,58 +1,38 @@
-@model XuanDucShop.ViewModels.InvoiceFormViewModel
-
+@model XuanDucShop.Models.ViewModels.InvoiceFormViewModel
 @{
-    var isEdit = Model.Invoice.Id != 0;
-    var actionName = isEdit ? "EditInvoice" : "CreateInvoice";
-    ViewData["Title"] = isEdit ? "Sửa hóa đơn" : "Tạo hóa đơn";
+    var formAction = Model.Id == 0 ? "CreateInvoice" : "EditInvoice";
+    int? routeId = Model.Id == 0 ? null : Model.Id;
+    ViewData["Title"] = ViewData["FormTitle"];
 }
 
-<div class="mb-4">
-    <a asp-action="Invoice" class="text-decoration-none small">← Danh sách hóa đơn</a>
-    <h1 class="h3 mt-2 mb-1">@ViewData["Title"]</h1>
-    <p class="text-secondary mb-0">Tổng tiền được tính từ các dòng chi tiết của hóa đơn.</p>
+<div class="page-heading">
+    <div><p class="eyebrow">BÁN HÀNG</p><h1>@ViewData["FormTitle"]</h1><p>Tổng tiền được tính tự động từ các dòng chi tiết hóa đơn.</p></div>
 </div>
-
-<div class="card border-0 shadow-sm">
-    <div class="card-body p-4">
-        <form asp-action="@actionName" asp-route-id="@Model.Invoice.Id" method="post">
-            <input asp-for="Invoice.Id" type="hidden" />
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label asp-for="Invoice.CustomerName" class="form-label"></label>
-                    <input asp-for="Invoice.CustomerName" class="form-control" />
-                    <span asp-validation-for="Invoice.CustomerName" class="text-danger small"></span>
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="Invoice.CustomerPhone" class="form-label"></label>
-                    <input asp-for="Invoice.CustomerPhone" class="form-control" />
-                    <span asp-validation-for="Invoice.CustomerPhone" class="text-danger small"></span>
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="Invoice.EmployeeId" class="form-label"></label>
-                    <select asp-for="Invoice.EmployeeId" asp-items="Model.Employees" class="form-select">
-                        <option value="">-- Chọn nhân viên --</option>
-                    </select>
-                    <span asp-validation-for="Invoice.EmployeeId" class="text-danger small"></span>
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="Invoice.CreatedAt" class="form-label"></label>
-                    <input asp-for="Invoice.CreatedAt" type="datetime-local" class="form-control" />
-                    <span asp-validation-for="Invoice.CreatedAt" class="text-danger small"></span>
-                </div>
+<section class="content-card form-card">
+    <form asp-action="@formAction" asp-route-id="@routeId" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="EmployeeId" class="form-label">Nhân viên lập hóa đơn <span class="required-mark">*</span></label>
+                <select asp-for="EmployeeId" asp-items="Model.EmployeeOptions" class="form-select">
+                    <option value="0">Chọn nhân viên</option>
+                </select>
+                <span asp-validation-for="EmployeeId" class="field-error"></span>
             </div>
-            <div class="d-flex gap-2 mt-4">
-                <button type="submit" class="btn btn-primary">Lưu hóa đơn</button>
-                <a asp-action="Invoice" class="btn btn-light border">Hủy</a>
-                @if (isEdit)
-                {
-                    <a asp-action="CreateInvoiceDetail" class="btn btn-outline-secondary">Thêm chi tiết hóa đơn</a>
-                }
+            <div class="col-md-6">
+                <label asp-for="CustomerName" class="form-label">Tên khách hàng <span class="required-mark">*</span></label>
+                <input asp-for="CustomerName" class="form-control" placeholder="Nhập tên khách hàng" autocomplete="name" />
+                <span asp-validation-for="CustomerName" class="field-error"></span>
             </div>
-        </form>
-    </div>
-</div>
+            <div class="col-md-6">
+                <label asp-for="CustomerPhone" class="form-label">Số điện thoại khách hàng</label>
+                <input asp-for="CustomerPhone" type="tel" class="form-control" placeholder="Nhập số điện thoại" autocomplete="tel" />
+                <span asp-validation-for="CustomerPhone" class="field-error"></span>
+            </div>
+        </div>
+        <div class="form-actions"><a asp-action="Invoice" class="btn btn-light">Hủy</a><button type="submit" class="btn btn-primary">Lưu hóa đơn</button></div>
+    </form>
+</section>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

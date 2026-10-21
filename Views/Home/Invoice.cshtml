@@ -1,56 +1,37 @@
-@model IEnumerable<XuanDucShop.Models.Invoice>
+@model IEnumerable<XuanDucShop.Models.ViewModels.InvoiceRowViewModel>
+@using System.Globalization
+@{ ViewData["Title"] = "Hóa đơn"; }
 
-@{
-    ViewData["Title"] = "Hóa đơn";
-    var employees = ViewBag.Employees as IEnumerable<XuanDucShop.Models.Employee> ?? Enumerable.Empty<XuanDucShop.Models.Employee>();
-}
-
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-    <div>
-        <h1 class="h3 mb-1">Danh sách hóa đơn</h1>
-        <p class="text-secondary mb-0">Theo dõi giao dịch và thông tin khách hàng.</p>
-    </div>
-    <a asp-action="CreateInvoice" class="btn btn-primary">+ Tạo hóa đơn</a>
+<div class="page-heading">
+    <div><p class="eyebrow">BÁN HÀNG</p><h1>Hóa đơn</h1><p>Lịch sử giao dịch và thông tin khách hàng.</p></div>
+    <a asp-action="CreateInvoice" class="btn btn-primary">Tạo hóa đơn</a>
 </div>
-
-<div class="card border-0 shadow-sm">
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-                <tr>
-                    <th class="ps-3">Mã hóa đơn</th>
-                    <th>Ngày tạo</th>
-                    <th>Nhân viên</th>
-                    <th>Khách hàng</th>
-                    <th>Điện thoại</th>
-                    <th class="text-end">Tổng tiền</th>
-                    <th class="text-end pe-3">Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+<section class="content-card">
+    @if (!Model.Any())
+    {
+        <div class="empty-state"><strong>Chưa có hóa đơn</strong><span>Tạo hóa đơn để bắt đầu ghi nhận giao dịch.</span><a asp-action="CreateInvoice" class="btn btn-primary mt-3">Tạo hóa đơn</a></div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table data-table align-middle mb-0">
+                <thead><tr><th>Mã hóa đơn</th><th>Ngày tạo</th><th>Nhân viên lập</th><th>Khách hàng</th><th>Số điện thoại</th><th class="text-end">Tổng tiền</th><th>Chi tiết</th><th class="text-end">Thao tác</th></tr></thead>
+                <tbody>
+                @foreach (var invoice in Model)
                 {
-                    var employeeName = employees.FirstOrDefault(x => x.Id == item.EmployeeId)?.FullName ?? "Không xác định";
                     <tr>
-                        <td class="ps-3 fw-medium">HD@item.Id.ToString("000")</td>
-                        <td class="text-nowrap">@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
-                        <td>@employeeName</td>
-                        <td>@item.CustomerName</td>
-                        <td>@item.CustomerPhone</td>
-                        <td class="text-end text-nowrap fw-semibold">@item.TotalAmount.ToString("N0") đ</td>
-                        <td class="text-end text-nowrap pe-3">
-                            <a asp-action="EditInvoice" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Sửa</a>
-                            <form asp-action="DeleteInvoice" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Xóa hóa đơn này sẽ xóa cả chi tiết liên quan. Tiếp tục?');">
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
-                            </form>
-                        </td>
+                        <td><a asp-action="InvoiceDetail" asp-route-invoiceId="@invoice.Id" class="table-id">#@invoice.Id</a></td>
+                        <td>@invoice.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td>@invoice.EmployeeName</td>
+                        <td class="cell-primary">@invoice.CustomerName</td>
+                        <td>@invoice.CustomerPhone</td>
+                        <td class="text-end fw-semibold">@invoice.TotalAmount.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) ₫</td>
+                        <td><a asp-action="InvoiceDetail" asp-route-invoiceId="@invoice.Id" class="table-action">Xem chi tiết</a></td>
+                        <td class="text-end"><div class="row-actions"><a asp-action="EditInvoice" asp-route-id="@invoice.Id" class="table-action">Sửa</a><form asp-action="DeleteInvoice" asp-route-id="@invoice.Id" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa hóa đơn này? Hãy xóa các dòng chi tiết trước.');">@Html.AntiForgeryToken()<button type="submit" class="table-action danger-action">Xóa</button></form></div></td>
                     </tr>
                 }
-                @if (!Model.Any())
-                {
-                    <tr><td colspan="7" class="text-center text-secondary py-4">Chưa có hóa đơn nào.</td></tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

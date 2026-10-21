@@ -1,68 +1,55 @@
-@model XuanDucShop.ViewModels.ProductFormViewModel
-
+@model XuanDucShop.Models.ViewModels.ProductFormViewModel
 @{
-    var isEdit = Model.Product.Id != 0;
-    var actionName = isEdit ? "EditProduct" : "CreateProduct";
-    ViewData["Title"] = isEdit ? "Sửa sản phẩm" : "Thêm sản phẩm";
+    var formAction = Model.Id == 0 ? "CreateProduct" : "EditProduct";
+    int? routeId = Model.Id == 0 ? null : Model.Id;
+    ViewData["Title"] = ViewData["FormTitle"];
 }
 
-<div class="mb-4">
-    <a asp-action="Product" class="text-decoration-none small">← Danh sách sản phẩm</a>
-    <h1 class="h3 mt-2 mb-1">@ViewData["Title"]</h1>
-    <p class="text-secondary mb-0">Cập nhật thông tin và trạng thái kinh doanh của sản phẩm.</p>
+<div class="page-heading">
+    <div><p class="eyebrow">HÀNG HÓA VÀ TỒN KHO</p><h1>@ViewData["FormTitle"]</h1><p>Giá bán và số lượng phải là giá trị không âm.</p></div>
 </div>
-
-<div class="card border-0 shadow-sm">
-    <div class="card-body p-4">
-        <form asp-action="@actionName" asp-route-id="@Model.Product.Id" method="post">
-            <input asp-for="Product.Id" type="hidden" />
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label asp-for="Product.Name" class="form-label"></label>
-                    <input asp-for="Product.Name" class="form-control" />
-                    <span asp-validation-for="Product.Name" class="text-danger small"></span>
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="Product.CategoryId" class="form-label"></label>
-                    <select asp-for="Product.CategoryId" asp-items="Model.Categories" class="form-select">
-                        <option value="">-- Chọn danh mục --</option>
-                    </select>
-                    <span asp-validation-for="Product.CategoryId" class="text-danger small"></span>
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Product.Price" class="form-label"></label>
-                    <div class="input-group">
-                        <input asp-for="Product.Price" class="form-control" type="number" min="0.01" step="0.01" />
-                        <span class="input-group-text">đ</span>
-                    </div>
-                    <span asp-validation-for="Product.Price" class="text-danger small"></span>
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Product.StockQuantity" class="form-label"></label>
-                    <input asp-for="Product.StockQuantity" class="form-control" type="number" min="0" />
-                    <span asp-validation-for="Product.StockQuantity" class="text-danger small"></span>
-                </div>
-                <div class="col-md-4">
-                    <label asp-for="Product.ImageFileName" class="form-label"></label>
-                    <input asp-for="Product.ImageFileName" class="form-control" placeholder="ca-phe.jpg" />
-                    <span asp-validation-for="Product.ImageFileName" class="text-danger small"></span>
-                </div>
-                <div class="col-12">
-                    <div class="form-check">
-                        <input asp-for="Product.IsActive" class="form-check-input" />
-                        <label asp-for="Product.IsActive" class="form-check-label"></label>
-                    </div>
+<section class="content-card form-card">
+    <form asp-action="@formAction" asp-route-id="@routeId" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+        <div class="row g-3">
+            <div class="col-md-7">
+                <label asp-for="Name" class="form-label">Tên sản phẩm <span class="required-mark">*</span></label>
+                <input asp-for="Name" class="form-control" placeholder="Nhập tên sản phẩm" autocomplete="off" />
+                <span asp-validation-for="Name" class="field-error"></span>
+            </div>
+            <div class="col-md-5">
+                <label asp-for="CategoryId" class="form-label">Danh mục <span class="required-mark">*</span></label>
+                <select asp-for="CategoryId" asp-items="Model.CategoryOptions" class="form-select">
+                    <option value="0">Chọn danh mục</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="field-error"></span>
+                @if (Model.CategoryOptions.Count == 0) { <small class="field-hint">Hãy thêm danh mục trước khi tạo sản phẩm.</small> }
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Price" class="form-label">Đơn giá (₫) <span class="required-mark">*</span></label>
+                <input asp-for="Price" type="number" min="0" step="1" class="form-control" />
+                <span asp-validation-for="Price" class="field-error"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="StockQuantity" class="form-label">Số lượng tồn kho <span class="required-mark">*</span></label>
+                <input asp-for="StockQuantity" type="number" min="0" step="1" class="form-control" />
+                <span asp-validation-for="StockQuantity" class="field-error"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="ImageFileName" class="form-label">Tên file ảnh</label>
+                <input asp-for="ImageFileName" class="form-control" placeholder="Để trống nếu chưa có ảnh" />
+                <span asp-validation-for="ImageFileName" class="field-error"></span>
+            </div>
+            <div class="col-12">
+                <div class="form-check form-switch">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label">Đang kinh doanh</label>
                 </div>
             </div>
-            <div class="d-flex gap-2 mt-4">
-                <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
-                <a asp-action="Product" class="btn btn-light border">Hủy</a>
-            </div>
-        </form>
-    </div>
-</div>
+        </div>
+        <div class="form-actions"><a asp-action="Product" class="btn btn-light">Hủy</a><button type="submit" class="btn btn-primary">Lưu sản phẩm</button></div>
+    </form>
+</section>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

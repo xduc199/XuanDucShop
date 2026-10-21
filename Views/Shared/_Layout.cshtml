@@ -1,44 +1,56 @@
+@{
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    var onCategoryPage = currentAction is "Category" or "CreateCategory" or "EditCategory";
+    var onProductPage = currentAction is "Product" or "CreateProduct" or "EditProduct";
+    var onEmployeePage = currentAction is "Employee" or "CreateEmployee" or "EditEmployee";
+    var onInvoicePage = currentAction is "Invoice" or "CreateInvoice" or "EditInvoice";
+    var onInvoiceDetailPage = currentAction is "InvoiceDetail" or "CreateInvoiceDetail" or "EditInvoiceDetail";
+}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - XuanDucShop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f7fb" />
+    <title>@ViewData["Title"] · XuanDucShop</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/XuanDucShop.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
-<body class="bg-light">
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm mb-4">
-            <div class="container">
-                <a class="navbar-brand fw-semibold" asp-controller="Home" asp-action="Index">XuanDucShop</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Mở menu">
+<body>
+    <header class="site-header">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container-xl">
+                <a class="navbar-brand brand-lockup" asp-controller="Home" asp-action="Index">
+                    <span class="brand-mark">X</span>
+                    <span>XuanDucShop<small>QUẢN LÝ CỬA HÀNG</small></span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavigation" aria-controls="mainNavigation" aria-expanded="false" aria-label="Mở menu điều hướng">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="mainNavbar">
-                    <ul class="navbar-nav ms-auto gap-lg-1">
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Category">Danh mục</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Product">Sản phẩm</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Employee">Nhân viên</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Invoice">Hóa đơn</a></li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="InvoiceDetail">Chi tiết hóa đơn</a></li>
+                <div class="collapse navbar-collapse" id="mainNavigation">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link @(currentAction == "Index" ? "active" : "")" asp-controller="Home" asp-action="Index" aria-current="@(currentAction == "Index" ? "page" : null)">Trang chủ</a></li>
+                        <li class="nav-item"><a class="nav-link @(onCategoryPage ? "active" : "")" asp-controller="Home" asp-action="Category" aria-current="@(onCategoryPage ? "page" : null)">Danh mục</a></li>
+                        <li class="nav-item"><a class="nav-link @(onProductPage ? "active" : "")" asp-controller="Home" asp-action="Product" aria-current="@(onProductPage ? "page" : null)">Sản phẩm</a></li>
+                        <li class="nav-item"><a class="nav-link @(onEmployeePage ? "active" : "")" asp-controller="Home" asp-action="Employee" aria-current="@(onEmployeePage ? "page" : null)">Nhân viên</a></li>
+                        <li class="nav-item"><a class="nav-link @(onInvoicePage ? "active" : "")" asp-controller="Home" asp-action="Invoice" aria-current="@(onInvoicePage ? "page" : null)">Hóa đơn</a></li>
+                        <li class="nav-item"><a class="nav-link @(onInvoiceDetailPage ? "active" : "")" asp-controller="Home" asp-action="InvoiceDetail" aria-current="@(onInvoiceDetailPage ? "page" : null)">Chi tiết hóa đơn</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
 
-    <main class="container pb-5">
-        @if (TempData["Success"] is string successMessage)
+    <main class="container-xl page-content">
+        @if (TempData["SuccessMessage"] is string successMessage)
         {
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 @successMessage
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
             </div>
         }
-        @if (TempData["Error"] is string errorMessage)
+        @if (TempData["ErrorMessage"] is string errorMessage)
         {
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 @errorMessage
@@ -48,13 +60,15 @@
         @RenderBody()
     </main>
 
-    <footer class="border-top bg-white py-3">
-        <div class="container text-secondary small">© 2026 XuanDucShop</div>
+    <footer class="site-footer">
+        <div class="container-xl d-flex flex-column flex-sm-row justify-content-between gap-1">
+            <span>XuanDucShop <span class="text-muted">· Quản lý cửa hàng</span></span>
+            <span class="text-muted">© @DateTime.Now.Year XuanDucShop</span>
+        </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

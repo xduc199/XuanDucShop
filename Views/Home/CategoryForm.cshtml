@@ -1,40 +1,29 @@
 @model XuanDucShop.Models.Category
-
 @{
-    var isEdit = Model.Id != 0;
-    var actionName = isEdit ? "EditCategory" : "CreateCategory";
-    ViewData["Title"] = isEdit ? "Sửa danh mục" : "Thêm danh mục";
+    var formAction = Model.Id == 0 ? "CreateCategory" : "EditCategory";
+    int? routeId = Model.Id == 0 ? null : Model.Id;
+    ViewData["Title"] = ViewData["FormTitle"];
 }
 
-<div class="mb-4">
-    <a asp-action="Category" class="text-decoration-none small">← Danh mục sản phẩm</a>
-    <h1 class="h3 mt-2 mb-1">@ViewData["Title"]</h1>
-    <p class="text-secondary mb-0">Nhập thông tin danh mục bên dưới.</p>
+<div class="page-heading">
+    <div><p class="eyebrow">DANH MỤC</p><h1>@ViewData["FormTitle"]</h1><p>Nhập thông tin danh mục sản phẩm.</p></div>
 </div>
+<section class="content-card form-card">
+    <form asp-action="@formAction" asp-route-id="@routeId" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Tên danh mục <span class="required-mark">*</span></label>
+            <input asp-for="Name" class="form-control" placeholder="Ví dụ: Đồ uống" autocomplete="off" />
+            <span asp-validation-for="Name" class="field-error"></span>
+        </div>
+        <div class="mb-4">
+            <label asp-for="Description" class="form-label">Mô tả</label>
+            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Mô tả ngắn về danh mục"></textarea>
+            <span asp-validation-for="Description" class="field-error"></span>
+        </div>
+        <div class="form-actions"><a asp-action="Category" class="btn btn-light">Hủy</a><button type="submit" class="btn btn-primary">Lưu danh mục</button></div>
+    </form>
+</section>
 
-<div class="card border-0 shadow-sm">
-    <div class="card-body p-4">
-        <form asp-action="@actionName" asp-route-id="@Model.Id" method="post">
-            <input asp-for="Id" type="hidden" />
-            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-            <div class="mb-3">
-                <label asp-for="Name" class="form-label"></label>
-                <input asp-for="Name" class="form-control" placeholder="Ví dụ: Đồ uống" />
-                <span asp-validation-for="Name" class="text-danger small"></span>
-            </div>
-            <div class="mb-4">
-                <label asp-for="Description" class="form-label"></label>
-                <textarea asp-for="Description" class="form-control" rows="3" placeholder="Mô tả ngắn về danh mục"></textarea>
-                <span asp-validation-for="Description" class="text-danger small"></span>
-            </div>
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Lưu thông tin</button>
-                <a asp-action="Category" class="btn btn-light border">Hủy</a>
-            </div>
-        </form>
-    </div>
-</div>
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

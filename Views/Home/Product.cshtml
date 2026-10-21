@@ -1,67 +1,36 @@
-@model IEnumerable<XuanDucShop.Models.Product>
+@model IEnumerable<XuanDucShop.Models.ViewModels.ProductRowViewModel>
+@using System.Globalization
+@{ ViewData["Title"] = "Sản phẩm"; }
 
-@{
-    ViewData["Title"] = "Sản phẩm";
-    var categories = ViewBag.Categories as IEnumerable<XuanDucShop.Models.Category> ?? Enumerable.Empty<XuanDucShop.Models.Category>();
-}
-
-<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
-    <div>
-        <h1 class="h3 mb-1">Sản phẩm</h1>
-        <p class="text-secondary mb-0">Theo dõi giá bán, tồn kho và trạng thái kinh doanh.</p>
-    </div>
-    <a asp-action="CreateProduct" class="btn btn-primary">+ Thêm sản phẩm</a>
+<div class="page-heading">
+    <div><p class="eyebrow">HÀNG HÓA VÀ TỒN KHO</p><h1>Sản phẩm</h1><p>Theo dõi mặt hàng, giá bán và số lượng tồn.</p></div>
+    <a asp-action="CreateProduct" class="btn btn-primary">Thêm sản phẩm</a>
 </div>
-
-<div class="card border-0 shadow-sm">
-    <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-            <thead class="table-light">
-                <tr>
-                    <th class="ps-3">Mã</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Danh mục</th>
-                    <th class="text-end">Đơn giá</th>
-                    <th class="text-end">Tồn kho</th>
-                    <th>Ảnh</th>
-                    <th>Trạng thái</th>
-                    <th class="text-end pe-3">Thao tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
+<section class="content-card">
+    @if (!Model.Any())
+    {
+        <div class="empty-state"><strong>Chưa có sản phẩm</strong><span>Thêm sản phẩm đầu tiên để bắt đầu quản lý hàng hóa.</span><a asp-action="CreateProduct" class="btn btn-primary mt-3">Thêm sản phẩm</a></div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table data-table align-middle mb-0">
+                <thead><tr><th>Mã</th><th>Sản phẩm</th><th>Danh mục</th><th class="text-end">Đơn giá</th><th class="text-center">Tồn kho</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
+                <tbody>
+                @foreach (var product in Model)
                 {
-                    var categoryName = categories.FirstOrDefault(x => x.Id == item.CategoryId)?.Name ?? "Không xác định";
                     <tr>
-                        <td class="ps-3 text-secondary">#@item.Id</td>
-                        <td class="fw-medium">@item.Name</td>
-                        <td>@categoryName</td>
-                        <td class="text-end text-nowrap">@item.Price.ToString("N0") đ</td>
-                        <td class="text-end">@item.StockQuantity</td>
-                        <td>@(string.IsNullOrWhiteSpace(item.ImageFileName) ? "—" : item.ImageFileName)</td>
-                        <td>
-                            @if (item.IsActive)
-                            {
-                                <span class="badge text-bg-success">Đang bán</span>
-                            }
-                            else
-                            {
-                                <span class="badge text-bg-secondary">Ngừng bán</span>
-                            }
-                        </td>
-                        <td class="text-end text-nowrap pe-3">
-                            <a asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Sửa</a>
-                            <form asp-action="DeleteProduct" asp-route-id="@item.Id" method="post" class="d-inline" onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này?');">
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
-                            </form>
-                        </td>
+                        <td class="table-id">#@product.Id</td>
+                        <td><div class="product-cell"><div class="product-placeholder" aria-hidden="true">@(string.IsNullOrEmpty(product.Name) ? "S" : product.Name[..1])</div><div><span class="cell-primary">@product.Name</span><small class="cell-secondary">@(string.IsNullOrWhiteSpace(product.ImageFileName) ? "Chưa có hình ảnh" : product.ImageFileName)</small></div></div></td>
+                        <td>@product.CategoryName</td>
+                        <td class="text-end fw-semibold">@product.Price.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) ₫</td>
+                        <td class="text-center"><span class="stock-value @(product.StockQuantity == 0 ? "stock-empty" : "")">@product.StockQuantity</span></td>
+                        <td><span class="status-badge @(product.IsActive ? "status-active" : "status-inactive")">@(product.IsActive ? "Đang kinh doanh" : "Ngừng kinh doanh")</span></td>
+                        <td class="text-end"><div class="row-actions"><a asp-action="EditProduct" asp-route-id="@product.Id" class="table-action">Sửa</a><form asp-action="DeleteProduct" asp-route-id="@product.Id" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này? Sản phẩm đã có trong hóa đơn sẽ không thể xóa.');">@Html.AntiForgeryToken()<button type="submit" class="table-action danger-action">Xóa</button></form></div></td>
                     </tr>
                 }
-                @if (!Model.Any())
-                {
-                    <tr><td colspan="8" class="text-center text-secondary py-4">Chưa có sản phẩm nào.</td></tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
+                </tbody>
+            </table>
+        </div>
+    }
+</section>
