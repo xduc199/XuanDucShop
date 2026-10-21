@@ -1,0 +1,6 @@
+@model IEnumerable<XuanDucShop.Models.InvoiceDetail>
+@{ ViewData["Title"] = "Chi tiết hóa đơn"; }
+<h1>Chi tiết hóa đơn</h1>
+<table class="table table-striped"><thead><tr><th>Id</th><th>Mã hóa đơn</th><th>Sản phẩm</th><th>Số lượng</th><th>Đơn giá</th><th>Thành tiền</th></tr></thead><tbody>
+@foreach (var item in Model) { <tr><td>@item.Id</td><td>@item.InvoiceId</td><td>@item.ProductId</td><td>@item.Quantity</td><td>@item.UnitPrice.ToString("N0") đ</td><td>@((item.Quantity * item.UnitPrice).ToString("N0")) đ</td></tr> }
+</tbody></table>

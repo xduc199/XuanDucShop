@@ -1,0 +1,12 @@
+@{ ViewData["Title"] = "Trang chủ"; }
+<div class="text-center">
+    <h1 class="display-5">Quản lý cửa hàng</h1>
+    <p class="lead">Trang chủ quản lý danh mục, sản phẩm, nhân viên và hóa đơn.</p>
+</div>
+<ul>
+    <li><a asp-action="Category">Danh mục sản phẩm</a></li>
+    <li><a asp-action="Product">Danh sách sản phẩm</a></li>
+    <li><a asp-action="Employee">Danh sách nhân viên</a></li>
+    <li><a asp-action="Invoice">Hóa đơn</a></li>
+    <li><a asp-action="InvoiceDetail">Chi tiết hóa đơn</a></li>
+</ul>

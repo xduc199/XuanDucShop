@@ -1,0 +1,6 @@
+@model IEnumerable<XuanDucShop.Models.Employee>
+@{ ViewData["Title"] = "Nhân viên"; }
+<h1>Danh sách nhân viên</h1>
+<table class="table table-striped"><thead><tr><th>Id</th><th>Họ tên</th><th>Điện thoại</th><th>Email</th><th>UserId</th><th>Trạng thái</th></tr></thead><tbody>
+@foreach (var item in Model) { <tr><td>@item.Id</td><td>@item.FullName</td><td>@item.Phone</td><td>@item.Email</td><td>@item.UserId</td><td>@(item.IsActive ? "Đang làm" : "Ngừng làm")</td></tr> }
+</tbody></table>
