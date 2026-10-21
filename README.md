@@ -1,7 +1,7 @@
 # 🛍️ XuanDucShop
 
 <p align="center">
-  <strong>HỆ THỐNG QUẢN LÝ CỬA HÀNG</strong><br/>
+  <strong>HỆ THỐNG QUẢN LÝ CỬA HÀNG XuanDucShop</strong><br/>
   Ứng dụng web xây dựng với ASP.NET Core MVC và .NET 10
 </p>
 
