@@ -1,0 +1,47 @@
+@model XuanDucShop.Models.ViewModels.EmployeeFormViewModel
+@{
+    var formAction = Model.Id == 0 ? "CreateEmployee" : "EditEmployee";
+    int? routeId = Model.Id == 0 ? null : Model.Id;
+    ViewData["Title"] = ViewData["FormTitle"];
+}
+
+<div class="page-heading">
+    <div><p class="eyebrow">NHÂN SỰ</p><h1>@ViewData["FormTitle"]</h1><p>Thông tin tài khoản chỉ là mã liên kết; trang này không quản lý thông tin đăng nhập.</p></div>
+</div>
+<section class="content-card form-card">
+    <form asp-action="@formAction" asp-route-id="@routeId" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="FullName" class="form-label">Họ và tên <span class="required-mark">*</span></label>
+                <input asp-for="FullName" class="form-control" placeholder="Nhập họ và tên" autocomplete="name" />
+                <span asp-validation-for="FullName" class="field-error"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Phone" class="form-label">Số điện thoại</label>
+                <input asp-for="Phone" type="tel" class="form-control" placeholder="Ví dụ: 0901234567" autocomplete="tel" />
+                <span asp-validation-for="Phone" class="field-error"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Email" class="form-label">Email</label>
+                <input asp-for="Email" type="email" class="form-control" placeholder="ten@example.com" autocomplete="email" />
+                <span asp-validation-for="Email" class="field-error"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="UserId" class="form-label">Mã tài khoản liên kết</label>
+                <input asp-for="UserId" class="form-control" placeholder="Không bắt buộc" />
+                <span asp-validation-for="UserId" class="field-error"></span>
+            </div>
+            <div class="col-12">
+                <div class="form-check form-switch">
+                    <input asp-for="IsActive" class="form-check-input" />
+                    <label asp-for="IsActive" class="form-check-label">Đang làm việc</label>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions"><a asp-action="Employee" class="btn btn-light">Hủy</a><button type="submit" class="btn btn-primary">Lưu nhân viên</button></div>
+    </form>
+</section>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

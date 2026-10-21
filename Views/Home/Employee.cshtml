@@ -1,6 +1,35 @@
 @model IEnumerable<XuanDucShop.Models.Employee>
 @{ ViewData["Title"] = "Nhân viên"; }
-<h1>Danh sách nhân viên</h1>
-<table class="table table-striped"><thead><tr><th>Id</th><th>Họ tên</th><th>Điện thoại</th><th>Email</th><th>UserId</th><th>Trạng thái</th></tr></thead><tbody>
-@foreach (var item in Model) { <tr><td>@item.Id</td><td>@item.FullName</td><td>@item.Phone</td><td>@item.Email</td><td>@item.UserId</td><td>@(item.IsActive ? "Đang làm" : "Ngừng làm")</td></tr> }
-</tbody></table>
+
+<div class="page-heading">
+    <div><p class="eyebrow">NHÂN SỰ</p><h1>Nhân viên</h1><p>Thông tin nhân viên và trạng thái làm việc.</p></div>
+    <a asp-action="CreateEmployee" class="btn btn-primary">Thêm nhân viên</a>
+</div>
+<section class="content-card">
+    @if (!Model.Any())
+    {
+        <div class="empty-state"><strong>Chưa có nhân viên</strong><span>Thêm nhân viên để quản lý nhân sự cửa hàng.</span><a asp-action="CreateEmployee" class="btn btn-primary mt-3">Thêm nhân viên</a></div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table data-table align-middle mb-0">
+                <thead><tr><th>Mã</th><th>Họ và tên</th><th>Số điện thoại</th><th>Email</th><th>Tài khoản liên kết</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
+                <tbody>
+                @foreach (var employee in Model)
+                {
+                    <tr>
+                        <td class="table-id">#@employee.Id</td>
+                        <td class="cell-primary">@employee.FullName</td>
+                        <td>@(string.IsNullOrWhiteSpace(employee.Phone) ? "—" : employee.Phone)</td>
+                        <td>@(string.IsNullOrWhiteSpace(employee.Email) ? "—" : employee.Email)</td>
+                        <td><span class="@(string.IsNullOrWhiteSpace(employee.UserId) ? "text-muted" : "account-linked")">@(string.IsNullOrWhiteSpace(employee.UserId) ? "Chưa liên kết" : "Đã liên kết")</span></td>
+                        <td><span class="status-badge @(employee.IsActive ? "status-active" : "status-inactive")">@(employee.IsActive ? "Đang làm việc" : "Đã nghỉ")</span></td>
+                        <td class="text-end"><div class="row-actions"><a asp-action="EditEmployee" asp-route-id="@employee.Id" class="table-action">Sửa</a><form asp-action="DeleteEmployee" asp-route-id="@employee.Id" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa nhân viên này? Nhân viên đã lập hóa đơn sẽ không thể xóa.');">@Html.AntiForgeryToken()<button type="submit" class="table-action danger-action">Xóa</button></form></div></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

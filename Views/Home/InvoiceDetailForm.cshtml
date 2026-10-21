@@ -1,0 +1,40 @@
+@model XuanDucShop.Models.ViewModels.InvoiceDetailFormViewModel
+@{
+    var formAction = Model.Id == 0 ? "CreateInvoiceDetail" : "EditInvoiceDetail";
+    int? routeId = Model.Id == 0 ? null : Model.Id;
+    ViewData["Title"] = ViewData["FormTitle"];
+}
+
+<div class="page-heading">
+    <div><p class="eyebrow">CHI TIẾT BÁN HÀNG</p><h1>@ViewData["FormTitle"]</h1><p>Đơn giá được lấy từ sản phẩm hiện tại; tổng hóa đơn sẽ được tính lại tự động.</p></div>
+</div>
+<section class="content-card form-card">
+    <form asp-action="@formAction" asp-route-id="@routeId" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label asp-for="InvoiceId" class="form-label">Hóa đơn <span class="required-mark">*</span></label>
+                <select asp-for="InvoiceId" asp-items="Model.InvoiceOptions" class="form-select">
+                    <option value="0">Chọn hóa đơn</option>
+                </select>
+                <span asp-validation-for="InvoiceId" class="field-error"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="ProductId" class="form-label">Sản phẩm <span class="required-mark">*</span></label>
+                <select asp-for="ProductId" asp-items="Model.ProductOptions" class="form-select">
+                    <option value="0">Chọn sản phẩm</option>
+                </select>
+                <span asp-validation-for="ProductId" class="field-error"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Quantity" class="form-label">Số lượng <span class="required-mark">*</span></label>
+                <input asp-for="Quantity" type="number" min="1" step="1" class="form-control" />
+                <span asp-validation-for="Quantity" class="field-error"></span>
+            </div>
+        </div>
+        <div class="form-actions"><a asp-action="InvoiceDetail" asp-route-invoiceId="@Model.InvoiceId" class="btn btn-light">Hủy</a><button type="submit" class="btn btn-primary">Lưu chi tiết</button></div>
+    </form>
+</section>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

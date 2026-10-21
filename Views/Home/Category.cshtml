@@ -1,6 +1,30 @@
 @model IEnumerable<XuanDucShop.Models.Category>
 @{ ViewData["Title"] = "Danh mục sản phẩm"; }
-<h1>Danh mục sản phẩm</h1>
-<table class="table table-striped"><thead><tr><th>Id</th><th>Tên danh mục</th><th>Mô tả</th></tr></thead><tbody>
-@foreach (var item in Model) { <tr><td>@item.Id</td><td>@item.Name</td><td>@item.Description</td></tr> }
-</tbody></table>
+
+<div class="page-heading">
+    <div><p class="eyebrow">DỮ LIỆU CỬA HÀNG</p><h1>Danh mục sản phẩm</h1><p>Quản lý các nhóm sản phẩm đang kinh doanh.</p></div>
+    <a asp-action="CreateCategory" class="btn btn-primary">Thêm danh mục</a>
+</div>
+<section class="content-card">
+    @if (!Model.Any())
+    {
+        <div class="empty-state"><strong>Chưa có danh mục</strong><span>Thêm danh mục đầu tiên để bắt đầu phân loại sản phẩm.</span><a asp-action="CreateCategory" class="btn btn-primary mt-3">Thêm danh mục</a></div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table data-table align-middle mb-0">
+                <thead><tr><th>Mã danh mục</th><th>Tên danh mục</th><th>Mô tả</th><th class="text-end">Thao tác</th></tr></thead>
+                <tbody>
+                @foreach (var category in Model)
+                {
+                    <tr>
+                        <td class="table-id">#@category.Id</td><td class="cell-primary">@category.Name</td><td class="description-cell">@(string.IsNullOrWhiteSpace(category.Description) ? "Chưa có mô tả" : category.Description)</td>
+                        <td class="text-end"><div class="row-actions"><a asp-action="EditCategory" asp-route-id="@category.Id" class="table-action">Sửa</a><form asp-action="DeleteCategory" asp-route-id="@category.Id" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa danh mục này? Danh mục đang có sản phẩm sẽ không thể xóa.');">@Html.AntiForgeryToken()<button type="submit" class="table-action danger-action">Xóa</button></form></div></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

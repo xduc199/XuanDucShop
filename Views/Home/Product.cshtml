@@ -1,6 +1,36 @@
-@model IEnumerable<XuanDucShop.Models.Product>
-@{ ViewData["Title"] = "Danh sách sản phẩm"; }
-<h1>Danh sách sản phẩm</h1>
-<table class="table table-striped"><thead><tr><th>Id</th><th>Tên sản phẩm</th><th>Danh mục</th><th>Đơn giá</th><th>Tồn kho</th><th>Ảnh</th><th>Trạng thái</th></tr></thead><tbody>
-@foreach (var item in Model) { <tr><td>@item.Id</td><td>@item.Name</td><td>@item.CategoryId</td><td>@item.Price.ToString("N0") đ</td><td>@item.StockQuantity</td><td>@item.ImageFileName</td><td>@(item.IsActive ? "Đang bán" : "Ngừng bán")</td></tr> }
-</tbody></table>
+@model IEnumerable<XuanDucShop.Models.ViewModels.ProductRowViewModel>
+@using System.Globalization
+@{ ViewData["Title"] = "Sản phẩm"; }
+
+<div class="page-heading">
+    <div><p class="eyebrow">HÀNG HÓA VÀ TỒN KHO</p><h1>Sản phẩm</h1><p>Theo dõi mặt hàng, giá bán và số lượng tồn.</p></div>
+    <a asp-action="CreateProduct" class="btn btn-primary">Thêm sản phẩm</a>
+</div>
+<section class="content-card">
+    @if (!Model.Any())
+    {
+        <div class="empty-state"><strong>Chưa có sản phẩm</strong><span>Thêm sản phẩm đầu tiên để bắt đầu quản lý hàng hóa.</span><a asp-action="CreateProduct" class="btn btn-primary mt-3">Thêm sản phẩm</a></div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table data-table align-middle mb-0">
+                <thead><tr><th>Mã</th><th>Sản phẩm</th><th>Danh mục</th><th class="text-end">Đơn giá</th><th class="text-center">Tồn kho</th><th>Trạng thái</th><th class="text-end">Thao tác</th></tr></thead>
+                <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td class="table-id">#@product.Id</td>
+                        <td><div class="product-cell"><div class="product-placeholder" aria-hidden="true">@(string.IsNullOrEmpty(product.Name) ? "S" : product.Name[..1])</div><div><span class="cell-primary">@product.Name</span><small class="cell-secondary">@(string.IsNullOrWhiteSpace(product.ImageFileName) ? "Chưa có hình ảnh" : product.ImageFileName)</small></div></div></td>
+                        <td>@product.CategoryName</td>
+                        <td class="text-end fw-semibold">@product.Price.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) ₫</td>
+                        <td class="text-center"><span class="stock-value @(product.StockQuantity == 0 ? "stock-empty" : "")">@product.StockQuantity</span></td>
+                        <td><span class="status-badge @(product.IsActive ? "status-active" : "status-inactive")">@(product.IsActive ? "Đang kinh doanh" : "Ngừng kinh doanh")</span></td>
+                        <td class="text-end"><div class="row-actions"><a asp-action="EditProduct" asp-route-id="@product.Id" class="table-action">Sửa</a><form asp-action="DeleteProduct" asp-route-id="@product.Id" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa sản phẩm này? Sản phẩm đã có trong hóa đơn sẽ không thể xóa.');">@Html.AntiForgeryToken()<button type="submit" class="table-action danger-action">Xóa</button></form></div></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

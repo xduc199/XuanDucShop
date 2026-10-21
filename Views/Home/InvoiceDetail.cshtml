@@ -1,6 +1,44 @@
-@model IEnumerable<XuanDucShop.Models.InvoiceDetail>
-@{ ViewData["Title"] = "Chi tiết hóa đơn"; }
-<h1>Chi tiết hóa đơn</h1>
-<table class="table table-striped"><thead><tr><th>Id</th><th>Mã hóa đơn</th><th>Sản phẩm</th><th>Số lượng</th><th>Đơn giá</th><th>Thành tiền</th></tr></thead><tbody>
-@foreach (var item in Model) { <tr><td>@item.Id</td><td>@item.InvoiceId</td><td>@item.ProductId</td><td>@item.Quantity</td><td>@item.UnitPrice.ToString("N0") đ</td><td>@((item.Quantity * item.UnitPrice).ToString("N0")) đ</td></tr> }
-</tbody></table>
+@model IEnumerable<XuanDucShop.Models.ViewModels.InvoiceDetailRowViewModel>
+@using System.Globalization
+@{
+    ViewData["Title"] = "Chi tiết hóa đơn";
+    var selectedInvoiceId = Context.Request.Query["invoiceId"].ToString();
+    int? selectedId = int.TryParse(selectedInvoiceId, out var parsedInvoiceId) ? parsedInvoiceId : null;
+}
+
+<div class="page-heading">
+    <div><p class="eyebrow">BÁN HÀNG</p><h1>Chi tiết hóa đơn</h1><p>Các mặt hàng, số lượng và đơn giá trong giao dịch.</p></div>
+    <div class="heading-actions"><a asp-action="CreateInvoiceDetail" asp-route-invoiceId="@selectedId" class="btn btn-primary">Thêm sản phẩm</a><a asp-action="Invoice" class="btn btn-outline-secondary">Quay lại hóa đơn</a></div>
+</div>
+@if (!string.IsNullOrWhiteSpace(selectedInvoiceId))
+{
+    <div class="filter-notice">Đang xem chi tiết hóa đơn <strong>#@selectedInvoiceId</strong><a asp-action="InvoiceDetail">Xem tất cả</a></div>
+}
+<section class="content-card">
+    @if (!Model.Any())
+    {
+        <div class="empty-state"><strong>Không có chi tiết hóa đơn</strong><span>Thêm sản phẩm vào hóa đơn hoặc chọn hóa đơn khác.</span><a asp-action="CreateInvoiceDetail" asp-route-invoiceId="@selectedId" class="btn btn-primary mt-3">Thêm sản phẩm</a></div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table data-table align-middle mb-0">
+                <thead><tr><th>Mã chi tiết</th><th>Mã hóa đơn</th><th>Sản phẩm</th><th class="text-center">Số lượng</th><th class="text-end">Đơn giá</th><th class="text-end">Thành tiền</th><th class="text-end">Thao tác</th></tr></thead>
+                <tbody>
+                @foreach (var detail in Model)
+                {
+                    <tr>
+                        <td class="table-id">#@detail.Id</td>
+                        <td><a asp-action="InvoiceDetail" asp-route-invoiceId="@detail.InvoiceId" class="table-id">#@detail.InvoiceId</a></td>
+                        <td class="cell-primary">@detail.ProductName</td>
+                        <td class="text-center">@detail.Quantity</td>
+                        <td class="text-end">@detail.UnitPrice.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) ₫</td>
+                        <td class="text-end fw-semibold">@detail.LineTotal.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) ₫</td>
+                        <td class="text-end"><div class="row-actions"><a asp-action="EditInvoiceDetail" asp-route-id="@detail.Id" class="table-action">Sửa</a><form asp-action="DeleteInvoiceDetail" asp-route-id="@detail.Id" method="post" onsubmit="return confirm('Bạn có chắc muốn xóa dòng chi tiết này?');">@Html.AntiForgeryToken()<button type="submit" class="table-action danger-action">Xóa</button></form></div></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

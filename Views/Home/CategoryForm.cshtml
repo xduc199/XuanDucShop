@@ -1,0 +1,29 @@
+@model XuanDucShop.Models.Category
+@{
+    var formAction = Model.Id == 0 ? "CreateCategory" : "EditCategory";
+    int? routeId = Model.Id == 0 ? null : Model.Id;
+    ViewData["Title"] = ViewData["FormTitle"];
+}
+
+<div class="page-heading">
+    <div><p class="eyebrow">DANH MỤC</p><h1>@ViewData["FormTitle"]</h1><p>Nhập thông tin danh mục sản phẩm.</p></div>
+</div>
+<section class="content-card form-card">
+    <form asp-action="@formAction" asp-route-id="@routeId" method="post">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Tên danh mục <span class="required-mark">*</span></label>
+            <input asp-for="Name" class="form-control" placeholder="Ví dụ: Đồ uống" autocomplete="off" />
+            <span asp-validation-for="Name" class="field-error"></span>
+        </div>
+        <div class="mb-4">
+            <label asp-for="Description" class="form-label">Mô tả</label>
+            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Mô tả ngắn về danh mục"></textarea>
+            <span asp-validation-for="Description" class="field-error"></span>
+        </div>
+        <div class="form-actions"><a asp-action="Category" class="btn btn-light">Hủy</a><button type="submit" class="btn btn-primary">Lưu danh mục</button></div>
+    </form>
+</section>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

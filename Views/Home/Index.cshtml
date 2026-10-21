@@ -1,12 +1,66 @@
-@{ ViewData["Title"] = "Trang chủ"; }
-<div class="text-center">
-    <h1 class="display-5">Quản lý cửa hàng</h1>
-    <p class="lead">Trang chủ quản lý danh mục, sản phẩm, nhân viên và hóa đơn.</p>
-</div>
-<ul>
-    <li><a asp-action="Category">Danh mục sản phẩm</a></li>
-    <li><a asp-action="Product">Danh sách sản phẩm</a></li>
-    <li><a asp-action="Employee">Danh sách nhân viên</a></li>
-    <li><a asp-action="Invoice">Hóa đơn</a></li>
-    <li><a asp-action="InvoiceDetail">Chi tiết hóa đơn</a></li>
-</ul>
+@model XuanDucShop.Models.ViewModels.DashboardViewModel
+@using System.Globalization
+@{ ViewData["Title"] = "Tổng quan"; }
+
+<section class="welcome-panel mb-4">
+    <div>
+        <p class="eyebrow">TỔNG QUAN CỬA HÀNG</p>
+        <h1>Chào mừng đến với XuanDucShop</h1>
+        <p class="welcome-copy">Theo dõi nhanh tình hình sản phẩm, nhân sự và hoạt động bán hàng.</p>
+    </div>
+    <a asp-action="Invoice" class="btn btn-primary">Xem hóa đơn</a>
+</section>
+
+<section class="row g-3 mb-4" aria-label="Thống kê cửa hàng">
+    <div class="col-6 col-xl"><a class="stat-card" asp-action="Category"><span class="stat-label">Danh mục</span><strong>@Model.CategoryCount</strong><span class="stat-note">Danh mục sản phẩm</span></a></div>
+    <div class="col-6 col-xl"><a class="stat-card" asp-action="Product"><span class="stat-label">Sản phẩm</span><strong>@Model.ProductCount</strong><span class="stat-note">Mặt hàng trong cửa hàng</span></a></div>
+    <div class="col-6 col-xl"><a class="stat-card" asp-action="Employee"><span class="stat-label">Nhân viên</span><strong>@Model.EmployeeCount</strong><span class="stat-note">Hồ sơ nhân viên</span></a></div>
+    <div class="col-6 col-xl"><a class="stat-card" asp-action="Invoice"><span class="stat-label">Hóa đơn</span><strong>@Model.InvoiceCount</strong><span class="stat-note">Hóa đơn đã lập</span></a></div>
+    <div class="col-12 col-xl"><div class="stat-card revenue-card"><span class="stat-label">Tổng doanh thu</span><strong>@Model.Revenue.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) <small>₫</small></strong><span class="stat-note">Theo dữ liệu hóa đơn hiện có</span></div></div>
+</section>
+
+<section class="row g-4">
+    <div class="col-lg-8">
+        <div class="content-card h-100">
+            <div class="card-heading">
+                <div><p class="eyebrow">HOẠT ĐỘNG GẦN ĐÂY</p><h2>Hóa đơn mới nhất</h2></div>
+                <a asp-action="Invoice" class="text-link">Tất cả hóa đơn</a>
+            </div>
+            @if (Model.RecentInvoices.Count == 0)
+            {
+                <div class="empty-state"><strong>Chưa có hóa đơn</strong><span>Hóa đơn sẽ xuất hiện tại đây khi có dữ liệu.</span></div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table data-table align-middle mb-0">
+                        <thead><tr><th>Mã hóa đơn</th><th>Khách hàng</th><th>Nhân viên</th><th class="text-end">Tổng tiền</th></tr></thead>
+                        <tbody>
+                        @foreach (var invoice in Model.RecentInvoices)
+                        {
+                            <tr>
+                                <td><a asp-action="InvoiceDetail" asp-route-invoiceId="@invoice.Id" class="table-id">#@invoice.Id</a></td>
+                                <td><span class="cell-primary">@invoice.CustomerName</span><small class="cell-secondary">@invoice.CreatedAt.ToString("dd/MM/yyyy HH:mm")</small></td>
+                                <td>@invoice.EmployeeName</td>
+                                <td class="text-end fw-semibold">@invoice.TotalAmount.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) ₫</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="content-card h-100">
+            <div class="card-heading"><div><p class="eyebrow">TRUY CẬP NHANH</p><h2>Quản lý cửa hàng</h2></div></div>
+            <div class="quick-links">
+                <a asp-action="Category"><span>Danh mục sản phẩm</span><span aria-hidden="true">→</span></a>
+                <a asp-action="Product"><span>Sản phẩm và tồn kho</span><span aria-hidden="true">→</span></a>
+                <a asp-action="Employee"><span>Danh sách nhân viên</span><span aria-hidden="true">→</span></a>
+                <a asp-action="Invoice"><span>Hóa đơn bán hàng</span><span aria-hidden="true">→</span></a>
+                <a asp-action="InvoiceDetail"><span>Chi tiết hóa đơn</span><span aria-hidden="true">→</span></a>
+            </div>
+        </div>
+    </div>
+</section>
